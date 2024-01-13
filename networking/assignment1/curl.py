@@ -16,9 +16,15 @@ def eprint(*args, **kwargs):
 
 
 def connecttoUrl(url, port=80):
+
     response = ""
+    global ttt
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         double_slash_index = url.find("//")
+        httporhttps = url[:double_slash_index - 1]
+        if (httporhttps == 'https'):
+            eprint("Found HTTPS Disconnected")
+            sys.exit(1)
         # Find the index of the next slash after the double slash
         next_slash_index = url.find("/", double_slash_index + 2)
         # Extract the domain and URI
@@ -29,19 +35,23 @@ def connecttoUrl(url, port=80):
         # s.sendall(b"Hello, world")
         request = f"GET {path} HTTP/1.1\r\nHost: {domain}\r\n\r\n"
         s.sendall(request.encode())
+        # contentLength = response.find('Content-Length:')
+        # print(f"Content-Length: {response[contentLength+1]}")
+
         while True:
             data = s.recv(1024).decode()
             if not data:
-                break
+                break            
             response = response + data
         response_list = response.split()
     if '301 Moved Permanently' in response or '302 Found' in response:
         if ttt > 10:
             eprint(f'Infinite Loop')
+            sys.exit(1)
             return
         ttt += 1
         newIndex = response_list.index('Location:')
-        eprint(f'Redirected to {response_list[newIndex+1]}')
+        print(f'Redirected to {response_list[newIndex+1]}')
         return connecttoUrl(response_list[newIndex+1], PORT)
     else:
         doctype_index = response.find('<!DOCTYPE>')
@@ -52,4 +62,6 @@ def connecttoUrl(url, port=80):
 
 
 success, data = connecttoUrl(sys.argv[1], PORT)
+
 print(f"{data}")
+sys.exit(0)
