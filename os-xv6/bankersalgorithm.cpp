@@ -24,6 +24,13 @@ void matrixdisplay(int M[][10], int row, int col)
 
 void calculateNeed(need, maxm, allot)
 {
+    for (i = 0; i < m; i++)
+    {
+        for (i = 0; i < n; i++)
+        {
+            need[i][j] = max[i][j] - allocation[i][j];
+        }
+    }
 }
 
 bool isSafe(int processes[], int avail[], int maxm[][R],
@@ -111,12 +118,13 @@ int main()
 {
     int available[10];
 
-    int max[10], allocation[10][10];
-
-    cout << "Enter the no of process" << endl;
+    int max[10][10], allocation[10][10];
+    cout
+        << "Enter the no of process" << endl;
     cin >> m;
     cout << "Enter the no of resouce instances" << endl;
     cin >> n;
+    int need[P][R];
     for (i = 0; i < m; i++)
     {
         cin >> available[i];
@@ -124,11 +132,7 @@ int main()
 
     matrixinput(max, m, n);
     matrixinput(allocation, m, n);
-    for (i = 0; i < m; i++)
-    {
-        for (i = 0; i < n; i++)
-        {
-            need[i][j] = max[i][j] - allocation[i][j];
-        }
-    }
+
+
+    if(isSafe(max,allocation))
 }

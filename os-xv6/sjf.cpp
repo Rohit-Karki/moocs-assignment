@@ -58,7 +58,6 @@ int main()
     sort(p, p + n, compare_burst_time);
     if (n > 0)
     {
-
         cout << "Process Id"
              << "\t"
              << "Arrival time"

@@ -16,19 +16,14 @@ struct process
     int response_time;
     int completion_time;
 };
+using namespace std;
 
 bool Compare(process &a, process &b)
 {
     return a.arrival_time > b.arrival_time;
 }
 
-using namespace std;
 std::priority_queue<process, std::vector<process>, decltype(&Compare)> processes(Compare);
-
-bool compare_burst_time(process p1, process p2)
-{
-    return p1.burst_time < p2.burst_time;
-}
 
 void findavgTime(process p[], int n)
 {
@@ -65,10 +60,8 @@ int main()
         p[i].remaining_burst_time = p[i].burst_time;
         cout << endl;
     }
-    sort(p, p + n, compare_burst_time);
     if (n > 0)
     {
-
         cout << "Process Id"
              << "\t"
              << "Arrival time"
@@ -90,36 +83,6 @@ int main()
         process pp = p[i];
         processes.push(pp);
     }
-    for (int i = 0; i < n; i++)
-    {
-        process pp = p[i];
-    }
-    // for (int i = 0; i < n; i++)
-    // {
-    //     if (i > 0)
-    //     {
-    //         p[i].completion_time = p[i - 1].completion_time + p[i].burst_time;
-    //         p[i].turn_around_time = p[i].completion_time - p[i].arrival_time;
-    //         p[i].waiting_time = p[i].turn_around_time - p[i].burst_time;
-    //     }
-    //     else
-    //     {
-    //         p[i].completion_time = p[i].burst_time;
-    //         p[i].turn_around_time = p[i].completion_time - p[i].arrival_time;
-    //         p[i].waiting_time = p[i].turn_around_time - p[i].burst_time;
-    //     }
-    //     cout << p[i].pid << "\t"
-    //          << "\t" << p[i].arrival_time << "\t"
-    //          << "\t" << p[i].burst_time << "\t"
-    //          << "\t" << p[i].completion_time << "\t"
-    //          << "\t"
-    //          << "\t" << p[i].turn_around_time << "\t"
-    //          << "\t"
-    //          << "\t" << p[i].waiting_time << "\t"
-    //          << "\n"
-    //          << endl;
-    // }
-
     int t = 0;
     while (1)
     {

@@ -38,6 +38,10 @@ int main()
         cout << endl;
     }
     sort(p, p + n, compare_arrival_time);
+    for (int i = 0; i < n; i++)
+    {
+        cout << p[i].arrival_time << "\t" << endl;
+    }
     if (n > 0)
     {
         cout << "Process Id"
@@ -55,17 +59,28 @@ int main()
              << "\n"
              << endl;
     }
+    p[0].completion_time = p[0].arrival_time + p[0].burst_time;
+    /* calculating 1 to n ct */
+    int temp = 0;
+    for (int i = 1; i < n; i++)
+    {
+        // when proess is ideal in between i and i+1
+        temp = 0;
+        if (p[i - 1].completion_time < p[i].arrival_time)
+        {
+            temp = p[i].arrival_time - p[i].completion_time;
+        }
+        p[i].completion_time = p[i - 1].completion_time + p[i].burst_time + temp;
+    }
     for (int i = 0; i < n; i++)
     {
         if (i > 0)
         {
-            p[i].completion_time = p[i - 1].completion_time + p[i].burst_time;
             p[i].turn_around_time = p[i].completion_time - p[i].arrival_time;
             p[i].waiting_time = p[i].turn_around_time - p[i].burst_time;
         }
         else
         {
-            p[i].completion_time = p[i].burst_time;
             p[i].turn_around_time = p[i].completion_time - p[i].arrival_time;
             p[i].waiting_time = p[i].turn_around_time - p[i].burst_time;
         }
