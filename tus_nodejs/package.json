@@ -1,0 +1,20 @@
+{
+  "name": "tus_nodejs",
+  "version": "1.0.0",
+  "description": "Node Js implementation of tus protocol.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tus_protocol, nodejs"
+  ],
+  "author": "rohitkarki804@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.11.20",
+    "ts-node": "^10.9.2"
+  }
+}
