@@ -1,10 +1,10 @@
 import EventEmitter from "node:events"
 
 import { ServerOptions } from "../../../types";
-import { MAX_UPLOAD_SIZE } from "utils/src/CONSTANT";
 
 import type http from 'node:http'
 import { DataStore } from "../../../utils/src/DataStore";
+import { MAX_UPLOAD_SIZE } from './../../../utils/src/CONSTANT';
 
 /*  This regular expression is designed to extract 
     the last part of a string, which represents a file ID in a URL or path. 
