@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class HttpMessageHeader:
-    headerkey = None
-    headerValue = None
+    key = None
+    value = None
 
     def __init__(self, key, value):
-        self.headerkey = key
-        self.headervalue = value
+        self.key = key
+        self.value = value
 
 
 class HttpMethod(Enum):
@@ -17,7 +17,7 @@ class HttpMethod(Enum):
     DELETE = "DELETE"
     unknown = "unknownmethod"
 
-    def from_string(self, value):
+    def from_string(self, value):        
         if value == self.GET.value:
             return self.GET
         elif value == self.POST.value:
@@ -53,7 +53,7 @@ class QueryParameter:
         self.value = value
 
 
-def getHeaderFromString(self, string):
+def getHeaderFromString(string):
     str_split = string.split(' ')
     if (len(str_split) >= 2):
         header_key = str_split[0][:-1]

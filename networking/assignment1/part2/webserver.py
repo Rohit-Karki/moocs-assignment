@@ -7,11 +7,11 @@ from packages.http_params import HttpContentType, HttpMethod
 
 
 class WebServer:
-    sock = socket.socket(socket.AF_INET, socket.SOCK)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def openConnection(self, PORT):
+    def openConnection(self, PORT: int):
 
-        self.sock.bind(("localhost", PORT))
+        self.sock.bind(("", PORT))
         self.sock.listen()
 
         while True:
@@ -19,14 +19,14 @@ class WebServer:
 
             print(f"Accepted connection from {addr}")
 
-            conn.setblocking(False)
+            # conn.setblocking(False)
             while True:
                 data = conn.recv(4096)
-
                 if not data:
                     break
                 message = HttpRequest()
-                message.from_string(data.decode("ASCII"))
+                message.construct_from_string(data.decode('ASCII'))
+                print(message.http_method.value + " " + message.address)
                 message.content_length = 0
 
                 if message.http_method != HttpMethod.GET:
@@ -46,7 +46,7 @@ class WebServer:
                     )
                     conn.sendall(str(response).encode('ASCII'))
 
-                if message.address.split('.')[1:] != '.htm' or message.address.split('.')[1:] != '.html':
+                if message.address[:-4] != '.htm' or message.address[:-5] != '.html':
                     response_body = "\Only html or html file can be requested"
                     response = HttpResponse(
                         'HTTP/1.1',

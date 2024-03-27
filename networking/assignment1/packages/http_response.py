@@ -14,6 +14,7 @@ class HttpResponse:
 
     host = None
     body = None
+    date = None
 
     def __init__(self, http_version: str = None, status_code: int = None, reason_message: str = None,
                  content_type: HttpContentType = None, content_length: int = None, date: datetime = None,
@@ -27,6 +28,7 @@ class HttpResponse:
         self.location = location
         self.host = host
         self.body = body
+        self.date = date
 
     def __str__(self):
         return (self.http_version + str(self.status_code) + " " + self.reason_message) + \

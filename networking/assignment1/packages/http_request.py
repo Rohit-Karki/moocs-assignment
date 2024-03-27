@@ -36,18 +36,20 @@ class HttpRequest:
 
         # Initializing a get request
         method_line = lines[0]
-        if "" not in method_line:
-            http_method = HttpMethod.unknown
-            try:
-                self.http_method = http_method.from_string(
-                    method_line.split("")[0].strip())
-            except:
-                self.http_method = HttpMethod.unknown
-
-            self.address = method_line.split("")[1]
-            self.host = method_line.split("")[2]
+        if " " not in method_line:
+            return True
+        http_method = HttpMethod.unknown
+        try:
+            self.http_method = http_method.from_string(
+                method_line.split(' ')[0].strip())
+        except:
+            self.http_method = HttpMethod.unknown
+            print(self.http_method.value)
+        self.address = method_line.split(' ')[1]
+        self.host = method_line.split(' ')[2]
 
         isBodyStarted = False
+        body = ''
         for line in lines:
             if isBodyStarted:
                 body += line
@@ -59,4 +61,10 @@ class HttpRequest:
                     if header.key == "Content-Type":
                         content_type = header.value
                     elif header.key == "Content-Length":
-                        content_length = int(header.value)
+                        try:
+                            content_length = int(header.value)
+                        except:
+                            print("Could not parse content length from header:\n" +
+                                  header.key + ":" + header.value)
+                    elif header.key == "Host":
+                        self.host = header.value
