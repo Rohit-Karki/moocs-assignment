@@ -1,4 +1,4 @@
-from http_params import HttpMethod, getHeaderFromString, HttpContentType
+from packages.http_params import HttpMethod, getHeaderFromString, HttpContentType
 
 
 class HttpRequest:
@@ -24,14 +24,14 @@ class HttpRequest:
         self.body = body
 
     def __str__(self) -> str:
-        return (self.http_method+" "+self.address+" "+self.http_version) + \
+        return (self.http_method.value + " " + self.address+" " + self.http_version) + \
             (("\r\nHost: "+self.host) if (self.host is not None) else "") + \
             (('\r\nContent-Type: ' + self.content_type.value) if (self.content_type is not None) else "") + \
             (('\r\nContent-Length: ' + str(self.content_length)) if (self.content_length is not None) else "") + \
             (('\r\n\r\n' + self.body + "\r\n\r\n")
              if (self.body is not None) else "")
 
-    def construct_from_string(self, message: str):
+    def construct_from_string(self, message):
         lines = message.split('\r\n')
 
         # Initializing a get request

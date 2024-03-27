@@ -1,5 +1,5 @@
 import datetime
-from http_params import getHeaderFromString, HttpContentType
+from packages.http_params import getHeaderFromString, HttpContentType
 
 
 class HttpResponse:
@@ -15,7 +15,10 @@ class HttpResponse:
     host = None
     body = None
 
-    def __init__(self, http_version, status_code, reason_message, content_type, content_length, location, host, body):
+    def __init__(self, http_version: str = None, status_code: int = None, reason_message: str = None,
+                 content_type: HttpContentType = None, content_length: int = None, date: datetime = None,
+                 location: str = None,
+                 host: str = None, body=None):
         self.http_version = http_version
         self.status_code = status_code
         self.reason_message = reason_message
@@ -36,20 +39,21 @@ class HttpResponse:
             (('\r\n\r\n' + self.body) if (self.body is not None) else "")
 
     def from_string(self, message: str):
-        lines = message.split("\r\n")
+        lines = message.split(b'\r\n')
         response_line = lines[0]
+        self.http_version = response_line.split(b" ")[0]
+        print(self.http_version)
+        self.status_code = response_line.split(b" ")[1]
+        self.reason_message = b' '.join(response_line.split(b" ")[2:])
 
-        self.http_version = response_line.split(" ")[0]
-        self.status_code = response_line.split(" ")[1]
-        self.reason_message = response_line.split(" ")[2:]
         isBodyStarted = False
-        body = ''
+        body = b''
 
         for line in lines:
             if isBodyStarted:
-                body += line+'\n'
+                body += line+b'\n'
             else:
-                if "" in line:
+                if b"" in line:
                     isBodyStarted = True
                 else:
                     header = getHeaderFromString(line)
@@ -67,4 +71,4 @@ class HttpResponse:
                             print("Could not parse content length from header:\n" +
                                   header.key + ":" + header.value)
         if len(body) > 0:
-            self.body = body
+            self.body = body[:-1]

@@ -1,1 +1,2 @@
-import assignment1.part1.http_get_handler as http_get_handler
+import part1.http_get_handler
+from part1.http_get_handler import HttpHandler
