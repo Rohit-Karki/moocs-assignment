@@ -1,2 +1,0 @@
-class http_server:
-    
