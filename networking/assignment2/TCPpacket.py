@@ -28,7 +28,7 @@ class TCPpacket:
         return struct.pack(packing_format, self.sequence_no, flags, self.data_bytes)
 
     def unpack(self, packet):
-        format = '16sHc' + str(
+        format = 'Hc' + str(
             len(packet) - len_sequence_number - len_flags) + 's'
 
         self.sequence_no, flags, self.data_bytes = struct.unpack(
@@ -42,5 +42,5 @@ class TCPpacket:
         self.data_bytes = packet[3:]
 
     def __str__(self):
-        return str(self.sequence_number) + '\n' + self.data_bytes.decode(
+        return str(self.sequence_no) + '\n' + self.data_bytes.decode(
             'utf-8')
